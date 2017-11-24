@@ -1,6 +1,6 @@
 @extends('layouts.home_layout')
 @section('title')
-Detail a Book
+Edit Profile
 @endsection
 
 @section('css_extend')
@@ -32,25 +32,24 @@ Detail a Book
         <div class="user clearfix">
             <div class="avatar">
                 <img src="https://bootdey.com/img/Content/user-453533-fdadfd.png" class="img-thumbnail img-profile">
-            </div>                                
-            <div class="actions">
-                <div class="btn-group">
-                    <button class="btn btn-default btn-sm tip btn-responsive" title="" data-original-title="Add to friends"><span class="glyphicon glyphicon-plus glyphicon glyphicon-white"></span> Friends</button>
-                    <button class="btn btn-default btn-sm tip btn-responsive" title="" data-original-title="Send message"><span class="glyphicon glyphicon-envelope glyphicon glyphicon-white"></span> Message</button>
-                    <button class="btn btn-default btn-sm tip btn-responsive" title="" data-original-title="Recommend"><span class="glyphicon glyphicon-share-alt glyphicon glyphicon-white"></span> Recommend</button>
-                </div>
+            </div>
+            <div class="change">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default btn-sm btn-responsive"><i class="fa fa-camera-retro" aria-hidden="true"></i> Change Avatar</button>
+                <button type="button" class="btn btn-default btn-sm btn-responsive"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Change Cover</button>
+              </div>
             </div>                                                                                                
-        </div>                          
+        </div>
 		<div class="row">
       <!-- edit form column -->
       <div class="col-md-6 personal-info">
-        <div class="alert alert-info alert-dismissable">
-          <a class="panel-close close" data-dismiss="alert">×</a> 
-          <i class="fa fa-coffee"></i>
-          This is an <strong>.alert</strong>. Use this to show important messages to the user.
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Enable Your Location</strong> can improve you find the book near you
         </div>
-        <h3>Change Personal info</h3>
-        
+        <h3 class="display-2" style="margin-left: 32px; margin-bottom: 32px;"><b>Change Personal Infomation</b></h3>
         <form class="form-horizontal" role="form">
           <div class="form-group">
             <label class="col-lg-3 control-label">Name:</label>
@@ -83,6 +82,12 @@ Detail a Book
             </div>
           </div>
           <div class="form-group">
+            <label class="col-lg-3 control-label">Date Of Birth:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="">
+            </div>
+          </div>
+          <div class="form-group">
             <label class="col-md-3 control-label">Password:</label>
             <div class="col-md-8">
               <input class="form-control" type="password" value="11111122333">
@@ -104,7 +109,8 @@ Detail a Book
         </form>
       </div>
       <div class="col-md-6">
-        <div id="map" style="height:400px;"></div>
+        <button type="button" class="btn btn-info">Enable My Location</button>
+        <div id="map" style="margin-top:32px; height:400px;"></div>
       </div>
 		</div>                             
     </div>

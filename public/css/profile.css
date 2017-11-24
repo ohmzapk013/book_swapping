@@ -24,7 +24,7 @@
 .profile .user .avatar {
   position: absolute;
   left: 20px;
-  top: -85px;
+  top: -120px;
   z-index: 2;
 }
 
@@ -41,6 +41,11 @@
   float: right;
 }
 
+.profile .user .change {
+  margin-left: 170px;
+  float: left;
+}
+
 .profile .user .actions .btn {
   margin-bottom: 0px;
 }
@@ -51,13 +56,26 @@
 }
 
 .img-profile{
-    height:100px;
-    width:100px;
+    height:150px;
+    width:150px;
 }
 
 .img-cover{
     width:1200px;
     height:300px;
+}
+
+.inf-content{
+    border:1px solid #DDDDDD;
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+    box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.3);
+    margin-top: 16px;
+}
+
+.row-profile{
+  margin-left: 15px;
 }
 
 @media (max-width: 768px) {
@@ -74,4 +92,4 @@
     padding:4px 9px;
     font-size:90%;
     line-height: 1.2;
-  }
+}

@@ -78,7 +78,7 @@ Detail a Book
 				<div style="margin-top: 50px; margin-bottom: 50px;" class="row">
 					<div class="col-sm-1">
 						<div class="thumbnail">
-						<img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+						<img class="user-photo img-thumbnail" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
 						</div><!-- /thumbnail -->
 					</div><!-- /col-sm-1 -->
 					<div class="col-sm-11">
@@ -89,7 +89,7 @@ Detail a Book
 				<div class="row">
 					<div class="col-md-1">
 						<div class="thumbnail">
-						<img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+						<img class="img-responsive user-photo img-thumbnail" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
 						</div><!-- /thumbnail -->
 					</div><!-- /col-sm-1 -->
 					<div class="col-md-11">

@@ -16,19 +16,23 @@ Route::get('/', function () {
 });
 
 Route::get('/index', function() {
-	return view('homepage');
+    return view('homepage');
 });
 
-Route::get('/add-book', function() {
-	return view('book.add_edit_book');
-});
+Route::get('/add-book', 'BookController@create')->name('add_book');
+
+Route::post('/add-book', 'BookController@store');
 
 Route::get('/book-details', function() {
-	return view('book.book_details');
+    return view('book.book_details');
 });
 
 Route::get('/edit-profile', function() {
-	return view('profile.edit_profile');
+    return view('profile.edit_profile');
+});
+
+Route::get('/detail-profile', function() {
+    return view('profile.detail_profile');
 });
 
 Auth::routes();
