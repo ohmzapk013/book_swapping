@@ -36,7 +36,10 @@ Route::get('/detail-profile', function() {
 });
 
 Route::group(['prefix' => 'admin'], function() {
-    Route::resource('category', 'CategoryController');
+    Route::get('categories', 'CategoryController@index')->name('categories');
+    Route::post('categories', 'CategoryController@store');
+    Route::post('category/{id}', 'CategoryController@update')->name('update_category');
+    Route::post('category/delete/{id}', 'CategoryController@delete')->name('update_category');
 });
 
 Auth::routes();
