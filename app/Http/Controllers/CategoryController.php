@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Book;
-use Illuminate\Support\Facades\Validator;
 
-class BookController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,6 +14,7 @@ class BookController extends Controller
     public function index()
     {
         //
+        return view('admin.layouts.admin_layout');
     }
 
     /**
@@ -25,7 +24,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('book.add_edit_book');
+        //
     }
 
     /**
@@ -36,37 +35,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = Validator::make($request->all(),
-            [
-                'title' => 'required',
-                'name' => 'required',
-                'author' => 'required',
-                'status' => 'required|numeric',
-                'want_to' => 'required|numeric'
-            ],
-            [
-                'title' => 'the Title field is required',
-                'name' => 'the Name field is required',
-                'author' => 'the Author field is required',
-                'status' => 'the Status field is required',
-                'want_to' => 'the Want_to field is not empty'
-            ]
-        );
-        if ($validate->fails()) {
-            return redirect()->route('add_book')
-                             ->withErrors($validate)
-                             ->withInput();
-        } else {
-            $book = new Book;
-            $book->title = $request->title;
-            $book->name  = $request->name;
-            $book->author = $request->author;
-            $book->status = $request->status;
-            $book->want_to = $request->want_to;
-            $book->save();
-            dd($book);
-
-        }
+        //
     }
 
     /**

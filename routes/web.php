@@ -35,6 +35,10 @@ Route::get('/detail-profile', function() {
     return view('profile.detail_profile');
 });
 
+Route::group(['prefix' => 'admin'], function() {
+    Route::resource('category', 'CategoryController');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

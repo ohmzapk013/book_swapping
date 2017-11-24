@@ -17,58 +17,68 @@ Add New Book
             <div class="col-sm-3">
                 @include('layouts.left_sidebar')
             </div>
-            
-            <div class="col-sm-9 padding-right">
-                <form class="form-horizontal" method="POST" action="{{ route('add_book') }}">
-                    {{ csrf_field() }}
 
-                    <div class="form-group row {{ $errors->has('name') ? ' has-error' : '' }}">
-                      <label for="title" class="col-2 col-form-label">Title</label>
+            <div class="col-sm-9 padding-right">
+                @if (count($errors))
+                  <div class="alert alert-danger">
+                    <strong>Whoops!</strong> There were some problems with your input.
+                  </div>
+                @endif
+
+                <form class="form-horizontal" method="POST" action="{{ route('add_book') }}">
+                    {!! csrf_field() !!}
+
+                    <div class="form-group row {{ $errors->has('title') ? ' has-error' : '' }}">
+                      <label for="title" class="col-2 col-form-label">Title <font color="red">*</font></label>
                       <div class="col-10">
-                        <input class="form-control" type="text" placeholder="Example: Đắc Nhân Tâm (Khổ Lớn)">
+                        <input name="title" class="form-control" type="text" placeholder="Example: Đắc Nhân Tâm (Khổ Lớn)" value="{{ old('title') }}">
+                        <span class="text-danger">{{ $errors->first('title') }}</span>
                       </div>
                     </div>
                     <div class="form-group row {{ $errors->has('name') ? ' has-error' : '' }}">
-                      <label for="name" class="col-2 col-form-label">Name</label>
+                      <label for="name" class="col-2 col-form-label">Name <font color="red">*</font></label>
                       <div class="col-10">
-                        <input class="form-control" type="search" placeholder="Example: Đắc Nhân Tâm">
+                        <input name="name" class="form-control" type="text" placeholder="Example: Đắc Nhân Tâm" value="{{ old('name') }}">
+                        <span class="text-danger">{{ $errors->first('name') }}</span>
                       </div>
                     </div>
-                    <div class="form-group row {{ $errors->has('name') ? ' has-error' : '' }}">
-                      <label for="author" class="col-2 col-form-label">Author</label>
+                    <div class="form-group row {{ $errors->has('author') ? ' has-error' : '' }}">
+                      <label for="author" class="col-2 col-form-label">Author <font color="red">*</font></label>
                       <div class="col-10">
-                        <input class="form-control" type="email" placeholder="Example: Dale Carnegie">
+                        <input name="author" class="form-control" type="text" placeholder="Example: Dale Carnegie" value="{{ old('author') }}">
+                        <span class="text-danger">{{ $errors->first('author') }}</span>
                       </div>
                     </div>
-                    <div class="form-group row {{ $errors->has('name') ? ' has-error' : '' }}">
-                      <label for="author" class="col-2 col-form-label">Status</label>
+                    <div class="form-group row {{ $errors->has('status') ? ' has-error' : '' }}">
+                      <label for="author" class="col-2 col-form-label">Status <font color="red">*</font></label>
                       <div class="col-10">
-                        <select class="form-control">
-                            <option>Old Book</option>
-                            <option>Like New</option>
-                            <option>New 100%</option>
+                        <select name="status" class="form-control">
+                            <option value="0">Old Book</option>
+                            <option value="1">Like New</option>
+                            <option value="2">New 100%</option>
                         </select>
+                        <span class="text-danger">{{ $errors->first('status') }}</span>
                       </div>
                     </div>
-                    <div class="form-group row {{ $errors->has('name') ? ' has-error' : '' }}">
+                    <div class="form-group row">
                         <label for="author" class="col-2 col-form-label">Upload Image</label>
                         <div class="col-10">
                             <div class="choose_file">
                                 <span>Choose Image</span>
-                                <input type="file" id="files" name="image_list" accept="image/*" required multiple>
+                                <input type="file" id="files" name="image_list" accept="image/*" multiple>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12" id="show_image_list">
                     </div>
-                    <div class="form-group row {{ $errors->has('name') ? ' has-error' : '' }}">
+                    <div class="form-group row">
                       <label for="description" class="col-2 col-form-label">Description</label>
                       <div class="col-10">
-                        <textarea rows="5"></textarea>
+                        <textarea name="description" rows="5" value="{{ old('description') }}"></textarea>
                       </div>
                     </div>
-                    <div class="form-group row {{ $errors->has('name') ? ' has-error' : '' }}">
-                      <label for="description" class="col-2 col-form-label">Location</label>
+                    <div class="form-group row {{ $errors->has('location') ? ' has-error' : '' }}">
+                      <label for="description" class="col-2 col-form-label">Location <font color="red">*</font></label>
                       <div class="col-10">
                         <div class="row">
                             <div class="col-md-3">
@@ -86,18 +96,19 @@ Add New Book
                         </div>
                       </div>
                     </div>
-                    <div class="form-group row {{ $errors->has('name') ? ' has-error' : '' }}">
-                        <label for="want_to">Want to</label>
-                        <select class="form-control">
-                            <option>Swap</option>
-                            <option>Sell</option>
+                    <div class="form-group row {{ $errors->has('want_to') ? ' has-error' : '' }}">
+                        <label for="want_to">Want to <font color="red">*</font></label>
+                        <select name="want_to" class="form-control">
+                            <option value="0">Swap</option>
+                            <option value="1">Sell</option>
                         </select>
+                        <span class="text-danger">{{ $errors->first('want_to') }}</span>
                     </div>
-                    <div class="form-group row {{ $errors->has('name') ? ' has-error' : '' }}">
-                      <label for="author" class="col-2 col-form-label">Price</label>
+                    <div class="form-group row {{ $errors->has('price') ? ' has-error' : '' }}">
+                      <label for="price" class="col-2 col-form-label">Price</label>
                       <div class="col-10 form-inline">
                               <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                <input type="number" step="1000" class="form-control">
+                                <input name="price" type="number" class="form-control" value="{{ old('price') }}">
                                 <div class="input-group-addon">VNĐ</div>
                               </div>
                       </div>
