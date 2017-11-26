@@ -76,7 +76,7 @@ Manage Category
                     <textarea name="description" placeholder="Description" class="form-control"></textarea>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="margin-top: 0px;">
                 <button type="submit" class="btn btn-primary" >Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
@@ -104,7 +104,7 @@ Manage Category
                     <textarea name="description" id="edit_description" placeholder="Description" class="form-control"></textarea>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="margin-top: 0px;">
                 <button type="submit" class="btn btn-primary" >Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
@@ -121,7 +121,7 @@ Manage Category
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="lbl_delete_category"></h4>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer" style="margin-top: 0px;">
             <button type="submit" class="btn btn-default" id="modal-btn-yes">Yes</button>
             <button type="button" class="btn btn-primary" id="modal-btn-no" data-dismiss="modal">No</button>
           </div>

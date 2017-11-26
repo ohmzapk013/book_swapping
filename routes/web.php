@@ -38,8 +38,12 @@ Route::get('/detail-profile', function() {
 Route::group(['prefix' => 'admin'], function() {
     Route::get('categories', 'CategoryController@index')->name('categories');
     Route::post('categories', 'CategoryController@store');
-    Route::post('category/{id}', 'CategoryController@update')->name('update_category');
-    Route::post('category/delete/{id}', 'CategoryController@delete')->name('update_category');
+    Route::post('category/{id}', 'CategoryController@update');
+    Route::post('category/delete/{id}', 'CategoryController@delete');
+    Route::get('cities', 'CityController@index')->name('cities');
+    Route::post('cities', 'CityController@store')->name('add_city');
+    Route::post('city/{id}', 'CityController@update')->name('update_city');
+    Route::post('city/delete/{id}', 'CityController@delete')->name('delete_city');
 });
 
 Auth::routes();
