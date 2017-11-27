@@ -40,6 +40,9 @@
                     <li class="{{ isset($cities) ? 'active-link' : ''}}">
                         <a href="{{route('cities')}}"><i class="fa fa-arrows" aria-hidden="true"></i> Manage City </a>
                     </li>
+                    <li class="{{ isset($publishers) ? 'active-link' : ''}}">
+                        <a href="{{route('publishers')}}"><i class="fa fa-arrows" aria-hidden="true"></i> Manage Publisher </a>
+                    </li>
                 </ul>
             </div>
         </nav>

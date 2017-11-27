@@ -44,6 +44,7 @@ Route::group(['prefix' => 'admin'], function() {
     Route::post('cities', 'CityController@store')->name('add_city');
     Route::post('city/{id}', 'CityController@update')->name('update_city');
     Route::post('city/delete/{id}', 'CityController@delete')->name('delete_city');
+    
 });
 
 Auth::routes();
