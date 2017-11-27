@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Publisher;
+use Validator;
 
 class PublisherController extends Controller
 {
@@ -13,7 +15,8 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        return 
+        $publishers = Publisher::all();
+        return view('admin.publisher.manage_publisher', ['publishers' => $publishers]);
     }
 
     /**
@@ -23,7 +26,7 @@ class PublisherController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.publisher.add_edit_publisher');
     }
 
     /**
@@ -34,7 +37,29 @@ class PublisherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = Validator::make($request->all(),
+            [
+                'name' => 'required|unique:publishers',
+            ],
+            [
+                'name.required' => 'the Name field is required',
+                'name.unique'   => 'Publisher Name has exist'
+            ]
+        );
+
+        if ($validate->fails()) {
+            return redirect()->route('add_publisher')
+                             ->withErrors($validate)
+                             ->withInput();
+        } else {
+            $publisher = new Publisher;
+            $publisher->name        = $request->name;
+            $publisher->phone       = $request->phone;
+            $publisher->address     = $request->address;
+            $publisher->description = $request->description;
+            $publisher->save();
+            return redirect()->route('publishers')->with('success', 'The Publisher create successfull');
+        }
     }
 
     /**

@@ -44,7 +44,9 @@ Route::group(['prefix' => 'admin'], function() {
     Route::post('cities', 'CityController@store')->name('add_city');
     Route::post('city/{id}', 'CityController@update')->name('update_city');
     Route::post('city/delete/{id}', 'CityController@delete')->name('delete_city');
-    
+    Route::get('publishers', 'PublisherController@index')->name('publishers');
+    Route::get('publishers/add', 'PublisherController@create')->name('add_publisher');
+    Route::post('publishers/add', 'PublisherController@store');
 });
 
 Auth::routes();
