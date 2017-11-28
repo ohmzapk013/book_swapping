@@ -57,8 +57,8 @@ Manage City
                                 </form>
                             </td>
                             <td>
-                                <button class="btn btn-info" data-id="7" data-name="Ram">
-                                <i class="fa fa-plus"></i>
+                                <button data-id="{{$city->id}}" class="btn btn-info add_district">
+                                    <i class="fa fa-plus"></i>
                                 </button>
                                 <div class="listAttributes" style="border: 0.1px solid #eee; padding:10px;">
                                     <?php $districts = $city->districts; ?>
@@ -66,7 +66,7 @@ Manage City
                                         <div class="row">
                                             <div class="col-md-8">
                                                 <li class="checkEmpty" style="margin-bottom:20px;">
-                                                    <input type="text" name="district" value="{{$district->name}}" class="input_like_label">                                            
+                                                    <input type="text" name="district" value="{{$district->name}}" class="input_like_label">
                                                 </li>
                                             </div>
                                             <div class="col-md-4">
@@ -84,7 +84,7 @@ Manage City
                             <td>
                                 <div class="action">
                                     <button class="btn btn-sm btn-warning btn-circle edit_city" data-id="{{$city->id}}">
-                                    <i class="fa fa-pencil"></i> Edit
+                                        <i class="fa fa-pencil"></i> Edit
                                     </button>
                                     <button class="btn btn-sm btn-danger btn-circle delete_city" data-id="{{$city->id}}" data-toggle="modal" data-target="#delete_city"> 
                                     <i class="fa fa-trash-o"></i> Delete

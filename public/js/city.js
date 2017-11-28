@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'accepts': 'application/json',
+        }
+    });
 
     $('#add_city').click(function(e) {
         var form_add_city = '<input type="text" name="name">'
@@ -25,4 +31,5 @@ $(document).ready(function() {
         $('#delete_city').attr("action", "/admin/city/delete/" + id);
     });
 
+    $('.add_district')
 });

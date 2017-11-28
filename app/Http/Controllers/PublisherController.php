@@ -63,17 +63,6 @@ class PublisherController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -81,7 +70,8 @@ class PublisherController extends Controller
      */
     public function edit($id)
     {
-        //
+        $publisher = Publisher::findOrFail($id);
+        return view('admin.publisher.add_edit_publisher', ['publisher' => $publisher]);
     }
 
     /**
@@ -93,7 +83,28 @@ class PublisherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validate = Validator::make($request->all(),
+            [
+                'name' => 'required',
+            ],
+            [
+                'name.unique'   => 'Publisher Name has exist'
+            ]
+        );
+
+        if ($validate->fails()) {
+            return redirect()->route('add_publisher')
+                             ->withErrors($validate)
+                             ->withInput();
+        } else {
+            $publisher = Publisher::findOrFail($id);
+            $publisher->name        = $request->name;
+            $publisher->phone       = $request->phone;
+            $publisher->address     = $request->address;
+            $publisher->description = $request->description;
+            $publisher->save();
+            return redirect()->route('publishers')->with('success', 'The Publisher update successfull');
+        }
     }
 
     /**
@@ -102,8 +113,10 @@ class PublisherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $publisher = Publisher::findOrFail($id);
+        $publisher->delete();
+        return redirect()->route('publishers')->with('success', 'The Publisher delete successfull');
     }
 }

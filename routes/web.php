@@ -47,6 +47,9 @@ Route::group(['prefix' => 'admin'], function() {
     Route::get('publishers', 'PublisherController@index')->name('publishers');
     Route::get('publishers/add', 'PublisherController@create')->name('add_publisher');
     Route::post('publishers/add', 'PublisherController@store');
+    Route::get('publisher/edit/{id}', 'PublisherController@edit')->name('edit_publisher');
+    Route::post('publisher/edit/{id}', 'PublisherController@update')->name('update_publisher');
+    Route::post('publisher/delete/{id}', 'PublisherController@delete');
 });
 
 Auth::routes();
