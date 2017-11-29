@@ -44,6 +44,7 @@ Manage City
             <table class="table table-striped table-bordered table-hover table-checkable order-column dataTable no-footer" id="sample_1" role="grid" aria-describedby="sample_1_info">
                 <thead>
                     <tr role="row">
+                        <th>#</th>
                         <th style="width:160px;"> Name </th>
                         <th>
                             Destrict List
@@ -52,8 +53,9 @@ Manage City
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($cities as $city)
+                    @foreach ($cities as $index => $city)
                         <tr class="gradeX odd" role="row">
+                            <td>{{++$index}}</td>
                             <td>
                                 <form action="{{route('update_city', $city->id)}}" method="POST">
                                     {{ csrf_field() }}
