@@ -3,28 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\District;
+use Validator;
 
 class DistrictController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -34,29 +17,29 @@ class DistrictController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        //dd($request->all());
+        $validate = Validator::make($request->all(),
+            [
+                'name' => 'required|unique:districts',
+                'city_id' => 'required'
+            ],
+            [
+                'name.required' => 'the District field is required',
+                'name.unique'   => 'District Name has exist'
+            ]
+        );
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        if ($validate->fails()) {
+            return redirect()->route('cities')
+                             ->withErrors($validate)
+                             ->withInput();
+        } else {
+            $district = new District;
+            $district->city_id = $request->city_id;
+            $district->name = $request->name;
+            $district->save();
+            return redirect()->route('cities')->with('success', 'add District successfull');
+        }
     }
 
     /**
@@ -68,7 +51,26 @@ class DistrictController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validate = Validator::make($request->all(),
+            [
+                'name' => 'required'
+            ],
+            [
+                'name.required' => 'the District Name field is required',
+            ]
+        );
+
+        if ($validate->fails()) {
+            return redirect()->route('cities')
+                             ->withErrors($validate)
+                             ->withInput();
+        }else {
+            $district = District::findOrFail($id);
+            $district->name = $request->name;
+            $district->save();
+            return redirect()->route('cities')
+                             ->with('success', 'update district successfull');
+        }
     }
 
     /**
@@ -77,8 +79,10 @@ class DistrictController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $district = District::findOrFail($id);
+        $district->delete();
+        return redirect()->route('cities')->with('success', 'delete district successfull !!!');
     }
 }

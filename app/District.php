@@ -10,6 +10,6 @@ class District extends Model
 
     public function city()
     {
-    	return $this->belongsTo('App\City');
+        return $this->belongsTo('App\City');
     }
 }

@@ -29,10 +29,14 @@ Manage City
                 <strong>Whoops!</strong> <span class="text-danger">{{ $errors->first('name') }}</span>
               </div>
             @endif
-            <div class="col-md-6 col-sm-6">
-                <form method="POST" action="{{route('add_city')}}">
+            <div class="col-md-12 col-sm-6">
+                <a class="btn btn-info" id="add_city"><i class="fa fa-plus" aria-hidden="true"></i> Add City</a>
+                <form method="POST" action="{{route('add_city')}}" style="display: none">
                     {{ csrf_field() }}
-                    <a style="margin-right: 15px" class="btn btn-info" id="add_city"><i class="fa fa-plus" aria-hidden="true"></i> Add City</a>
+                    <input type="text" name="name">
+                    <button type="submit" class="btn btn-info">
+                        <i class="fa fa-check" aria-hidden="true"></i> OK
+                    </button>
                 </form>
             </div><br>
         </div>
@@ -60,24 +64,44 @@ Manage City
                                 <button data-id="{{$city->id}}" class="btn btn-info add_district">
                                     <i class="fa fa-plus"></i>
                                 </button>
+                                <form method="POST" action="{{route('add_district')}}" style="display: none">
+                                    {{ csrf_field() }}
+                                    <input type="text" name="name">
+                                    <input type="hidden" name="city_id" value="{{$city->id}}">
+                                    <button type="submit" class="btn btn-info add_district">
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                    </button>
+                                </form>
                                 <div class="listAttributes" style="border: 0.1px solid #eee; padding:10px;">
                                     <?php $districts = $city->districts; ?>
                                     @foreach ($districts as $district)
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <li class="checkEmpty" style="margin-bottom:20px;">
-                                                    <input type="text" name="district" value="{{$district->name}}" class="input_like_label">
-                                                </li>
+                                        <form method="POST" action="{{route('update_district', $district->id)}}">
+                                            {{ csrf_field() }}
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <li class="checkEmpty" style="margin-bottom:20px;">
+                                                        <input type="text" name="name" value="{{$district->name}}" class="input_like_label" readonly="">
+                                                        <input type="hidden" name="city_id" value="{{$city->id}}">
+                                                    </li>
+                                                </div>
+                                                <div class="col-md-4" style="display: block;">
+                                                    <a class="btn btn-sm btn-warning edit-attribute-value edit_district">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                                    <a data-id="{{$district->id}}" data-toggle="modal" data-target="#delete_district" class="btn btn-sm btn-danger delete-attribute-value delete_district">
+                                                        <i class="fa fa-trash-o"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-4" style="display: none;">
+                                                    <button type="submit" class="btn btn-sm btn-info edit-attribute-value">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                    <a class="btn btn-sm btn-danger delete-attribute-value close_edit">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <a class="btn btn-sm btn-warning edit-attribute-value" data-id="14" data-name="Ram">
-                                                <i class="fa fa-pencil"></i>
-                                                </a>
-                                                <a class="btn btn-sm btn-danger delete-attribute-value" data-id="14">
-                                                <i class="fa fa-trash-o"></i>
-                                                </a>
-                                            </div>
-                                        </div>
+                                        </form>
                                     @endforeach
                                 </div>
                             </td>
@@ -99,7 +123,7 @@ Manage City
     </div>
 </div>
 
-<!-- show confirm delete Post -->
+<!-- show confirm delete City -->
 <form class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="delete_city" action="" method="POST">
     {!! csrf_field() !!}
     <div class="modal-dialog modal-sm">
@@ -108,6 +132,23 @@ Manage City
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="lbl_delete_category"></h4>
             <strong><font color="red">All District Of City will be delete</font></strong>
+          </div>
+          <div class="modal-footer" style="margin-top: 0px;">
+            <button type="submit" class="btn btn-default" id="modal-btn-yes">Yes</button>
+            <button type="button" class="btn btn-primary" id="modal-btn-no" data-dismiss="modal">No</button>
+          </div>
+        </div>
+    </div>
+</form>
+
+<!-- show confirm delete Post -->
+<form class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="delete_district" action="" method="POST">
+    {!! csrf_field() !!}
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="lbl_delete_district"></h4>
           </div>
           <div class="modal-footer" style="margin-top: 0px;">
             <button type="submit" class="btn btn-default" id="modal-btn-yes">Yes</button>

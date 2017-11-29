@@ -6,6 +6,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>@yield('title')</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/prettyPhoto.css" rel="stylesheet">
