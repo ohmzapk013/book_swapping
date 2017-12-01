@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Book;
+use App\City;
+use App\District;
+use App\Category;
+use App\Publisher;
 use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
@@ -25,7 +29,10 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('book.add_edit_book');
+        $cities      = City::all();
+        $categories  = Category::all();
+        $publishers  = Publisher::all();
+        return view('book.add_edit_book', ['cities' => $cities, 'categories' => $categories, 'publishers' => $publishers]);
     }
 
     /**

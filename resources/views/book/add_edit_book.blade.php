@@ -5,10 +5,15 @@ Add New Book
 
 @section('css_extend')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/add_edit_book.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/typeahead.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-tagsinput.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-tagsinput-typeahead.css')}}">
 @endsection
 
 @section('js_extend')
 <script type="text/javascript" src="{{ asset('js/book.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/typeahead.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap-tagsinput.js') }}"></script>
 @endsection
 @section('home_content')
 <section>
@@ -40,6 +45,21 @@ Add New Book
                       <div class="col-10">
                         <input name="name" class="form-control" type="text" placeholder="Example: Đắc Nhân Tâm" value="{{ old('name') }}">
                         <span class="text-danger">{{ $errors->first('name') }}</span>
+                      </div>
+                    </div>
+                    <div class="form-group row {{ $errors->has('category') ? ' has-error' : '' }}">
+                      <label for="category" class="col-2 col-form-label">Category <font color="red">*</font></label>
+                      <div class="col-10">
+                        <input data-role="tagsinput" name="category" class="form-control" type="text" placeholder="" value="{{ old('category') }}">
+                        <span class="text-danger">{{ $errors->first('category') }}</span>
+                      </div>
+                    </div>
+
+                    <div class="form-group row {{ $errors->has('publisher') ? ' has-error' : '' }}">
+                      <label for="publisher" class="col-2 col-form-label">Publisher <font color="red">*</font></label>
+                      <div class="col-10">
+                        <input name="publisher" class="form-control" type="text" placeholder="" value="{{ old('publisher') }}">
+                        <span class="text-danger">{{ $errors->first('publisher') }}</span>
                       </div>
                     </div>
                     <div class="form-group row {{ $errors->has('author') ? ' has-error' : '' }}">
@@ -82,15 +102,16 @@ Add New Book
                       <div class="col-10">
                         <div class="row">
                             <div class="col-md-3">
-                                <select class="form-control">
-                                    <option>---</option>
-                                    <option>Hà Nội</option>
+                                <select name="city_id" class="form-control city">
+                                    <option id="select_default_city" selected>----</option>
+                                    @foreach ($cities as $city)
+                                        <option value="{{$city->id}}">{{$city->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <select class="form-control">
-                                    <option>---</option>
-                                    <option>Q. Hai Bà Trưng</option>
+                                <select class="form-control" name="district_id">
+                                    <option>----</option>
                                 </select>
                             </div>
                         </div>

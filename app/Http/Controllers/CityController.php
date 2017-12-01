@@ -16,6 +16,16 @@ class CityController extends Controller
         return view('admin.city.manage_city', ['cities' => $cities]);
     }
 
+    public function getAllDistrict($id)
+    {
+        $result = [];
+        $city = City::findOrFail($id);
+        foreach ($city->districts as $district) {
+            $result[] = $district->name;
+        }
+        return json_encode($result);
+    }
+
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(),

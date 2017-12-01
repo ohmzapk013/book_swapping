@@ -45,10 +45,11 @@ Route::group(['prefix' => 'admin'], function() {
     Route::post('cities', 'CityController@store')->name('add_city');
     Route::post('city/{id}', 'CityController@update')->name('update_city');
     Route::post('city/delete/{id}', 'CityController@delete')->name('delete_city');
+    Route::post('city/{id}/get_all_district', 'CityController@getAllDistrict');
 
     Route::post('districts', 'DistrictController@store')->name('add_district');
-    Route::post('district/{id}', 'DistrictController@update')->name('update_district');
     Route::post('district/delete/{id}', 'DistrictController@delete')->name('delete_district');
+    Route::post('district/{id}', 'DistrictController@update')->name('update_district');
 
     Route::get('publishers', 'PublisherController@index')->name('publishers');
     Route::get('publishers/add', 'PublisherController@create')->name('add_publisher');
