@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -64,15 +63,30 @@ class BookController extends Controller
                              ->withErrors($validate)
                              ->withInput();
         } else {
-            $book = new Book;
-            $book->title = $request->title;
-            $book->name  = $request->name;
-            $book->author = $request->author;
-            $book->status = $request->status;
-            $book->want_to = $request->want_to;
-            $book->save();
-            dd($book);
+            dd($request->file('image_list'));
+            // If form has a file(image) or not ?
+            if($request->hasFile('image_list')) {
+                // retrieve all of input data
+                $file = $request->file('image_list');
+                //get Image Name
+                $name = time().$file->getClientOriginalName();
+                //Store the file at our public/images
+                $file->move(public_path().'/images/products/',$name);
+                //get path
+                $imagePath = public_path().'/images/products/'.$name;
+                echo "insert image";
+            }
+            dd('ok');
 
+
+
+            // $book = new Book;
+            // $book->title = $request->title;
+            // $book->name  = $request->name;
+            // $book->author = $request->author;
+            // $book->status = $request->status;
+            // $book->want_to = $request->want_to;
+            // $book->save();
         }
     }
 

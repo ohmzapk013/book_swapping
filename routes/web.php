@@ -20,7 +20,6 @@ Route::get('/index', function() {
 });
 
 Route::get('/add-book', 'BookController@create')->name('add_book');
-
 Route::post('/add-book', 'BookController@store');
 
 Route::get('/book-details', function() {

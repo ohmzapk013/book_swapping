@@ -30,7 +30,7 @@ Add New Book
                   </div>
                 @endif
 
-                <form class="form-horizontal" method="POST" action="{{ route('add_book') }}">
+                <form class="form-horizontal" method="POST" action="{{ route('add_book') }}" enctype="multipart/form-data">
                     {!! csrf_field() !!}
 
                     <div class="form-group row {{ $errors->has('title') ? ' has-error' : '' }}">
@@ -85,7 +85,7 @@ Add New Book
                         <div class="col-10">
                             <div class="choose_file">
                                 <span>Choose Image</span>
-                                <input type="file" id="files" name="image_list" accept="image/*" multiple>
+                                <input type="file" id="files" name="image_list[]" accept="image/*" multiple>
                             </div>
                         </div>
                     </div>
