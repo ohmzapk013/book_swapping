@@ -63,22 +63,19 @@ class BookController extends Controller
                              ->withErrors($validate)
                              ->withInput();
         } else {
-            dd($request->file('image_list'));
             // If form has a file(image) or not ?
             if($request->hasFile('image_list')) {
                 // retrieve all of input data
-                $file = $request->file('image_list');
-                //get Image Name
-                $name = time().$file->getClientOriginalName();
-                //Store the file at our public/images
-                $file->move(public_path().'/images/products/',$name);
-                //get path
-                $imagePath = public_path().'/images/products/'.$name;
-                echo "insert image";
+                $files = $request->file('image_list');
+                foreach ($files as $file) {
+                    //get Image Name
+                    $name = time().$file->getClientOriginalName();
+                    //Store the file at our public/images
+                    $file->move(public_path() . '/images/products/',$name);
+                    //get path
+                    $imagePath = public_path().'/images/products/'.$name;
+                }
             }
-            dd('ok');
-
-
 
             // $book = new Book;
             // $book->title = $request->title;

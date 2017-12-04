@@ -6,6 +6,7 @@ $(document).ready(function() {
         }
     });
 
+    var imageList = [];
     if (window.File && window.FileList && window.FileReader) {
         $("#files").on("change", function(e) {
             var files = e.target.files,
@@ -29,8 +30,9 @@ $(document).ready(function() {
           //   fileReader.readAsDataURL(f);
           // }
 
-            $.each(files, function( index, file ) {
+            $.each(files, function(index, file ) {
                 name.push(file.name);
+                imageList.push(file.name);
                 var f = file;
                 var fileReader = new FileReader();
                   fileReader.onload = (function(e) {
@@ -41,11 +43,21 @@ $(document).ready(function() {
                       "<br/><span class=\"remove\">Remove image</span>" +
                       "</span>").appendTo("#show_image_list");
                     $(".remove").click(function(){
+                      removeTitle = $(this).parent().find('img').attr('title');
+                      var removeIndex = imageList.indexOf(removeTitle);
+                      if (removeIndex !== -1) {
+                        imageList.splice(removeIndex, 1);
+                      }
                       $(this).parent(".pip").remove();
+                      console.log(imageList);
                     });
                 });
                 fileReader.readAsDataURL(f);
             });
+
+            setTimeout(function() {
+              console.log(imageList);
+            }, 2000);
         });
     } else {
         alert("Your browser doesn't support to File API")
