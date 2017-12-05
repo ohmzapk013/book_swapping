@@ -30,7 +30,7 @@ Add New Book
                   </div>
                 @endif
 
-                <form class="form-horizontal" method="POST" action="{{ route('add_book') }}" enctype="multipart/form-data">
+                <form id="form_add_book" class="form-horizontal" method="POST" action="{{ route('add_book') }}" enctype="multipart/form-data">
                     {!! csrf_field() !!}
 
                     <div class="form-group row {{ $errors->has('title') ? ' has-error' : '' }}">

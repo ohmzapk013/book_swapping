@@ -8,6 +8,8 @@ use App\District;
 use App\Category;
 use App\Publisher;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -32,6 +34,25 @@ class BookController extends Controller
         $categories  = Category::all();
         $publishers  = Publisher::all();
         return view('book.add_edit_book', ['cities' => $cities, 'categories' => $categories, 'publishers' => $publishers]);
+    }
+
+    public function uploadImages(Request $request)
+    {
+        if($request->hasFile('image_list')) {
+           // retrieve all of input data
+           $files = $request->file('image_list');
+           $imagesName = explode(',', $request->image_name);
+           foreach ($files as $index => $file) {
+               //Store the file at our public/images
+               $file->move(public_path() . '/images/products/', $imagesName[$index]);
+           }
+        }
+    }
+
+    public function deleteImage($imageName)
+    {
+        unlink(public_path() . '/images/products/' . $imageName);
+        echo 'delete success';
     }
 
     /**
@@ -63,19 +84,6 @@ class BookController extends Controller
                              ->withErrors($validate)
                              ->withInput();
         } else {
-            // If form has a file(image) or not ?
-            if($request->hasFile('image_list')) {
-                // retrieve all of input data
-                $files = $request->file('image_list');
-                foreach ($files as $file) {
-                    //get Image Name
-                    $name = time().$file->getClientOriginalName();
-                    //Store the file at our public/images
-                    $file->move(public_path() . '/images/products/',$name);
-                    //get path
-                    $imagePath = public_path().'/images/products/'.$name;
-                }
-            }
 
             // $book = new Book;
             // $book->title = $request->title;

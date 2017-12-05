@@ -9,55 +9,64 @@ $(document).ready(function() {
     var imageList = [];
     if (window.File && window.FileList && window.FileReader) {
         $("#files").on("change", function(e) {
+            var date = new Date();
+            var prefixName = date.getTime();
             var files = e.target.files,
             filesLength = files.length;
             var name = [];
-          // for (var i = 0; i < filesLength; i++) {
-          //   name.push(files[i].name);
-          //   var f = files[i];
-          //   var fileReader = new FileReader();
-          //     fileReader.onload = (function(e) {
-          //       console.log(i);
-          //       var file = e.target;
-          //       $("<span class=\"pip\">" +
-          //         "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + name.shift() + "\"/>" +
-          //         "<br/><span class=\"remove\">Remove image</span>" +
-          //         "</span>").appendTo("#show_image_list");
-          //       $(".remove").click(function(){
-          //         $(this).parent(".pip").remove();
-          //       });
-          //   });
-          //   fileReader.readAsDataURL(f);
-          // }
+            //send image to server
+            var tmpName = [];
+            for (i = 0; i < filesLength; i++) {
+              tmpName.push(prefixName + files[i].name);
+            }
+            data = new FormData($('#form_add_book')[0]);
+            data.append('image_name', tmpName);
+            $.ajax({
+              url: "/upload-images",
+              type: "post",
+              processData: false,
+              contentType: false,
+              data: data,
+
+              success: function (data) {
+                console.log(data);
+              }
+            });
 
             $.each(files, function(index, file ) {
-                name.push(file.name);
-                imageList.push(file.name);
+                fileName = prefixName + file.name;
+                name.push(fileName);
+                imageList.push(fileName);
                 var f = file;
                 var fileReader = new FileReader();
-                  fileReader.onload = (function(e) {
-                    console.log(index);
-                    var file = e.target;
-                    $("<span class=\"pip\">" +
-                      "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + name[index] + "\"/>" +
-                      "<br/><span class=\"remove\">Remove image</span>" +
-                      "</span>").appendTo("#show_image_list");
-                    $(".remove").click(function(){
-                      removeTitle = $(this).parent().find('img').attr('title');
-                      var removeIndex = imageList.indexOf(removeTitle);
-                      if (removeIndex !== -1) {
-                        imageList.splice(removeIndex, 1);
-                      }
-                      $(this).parent(".pip").remove();
-                      console.log(imageList);
-                    });
+                fileReader.onload = (function(e) {
+                  console.log(index);
+                  var file = e.target;
+                  $("<span class=\"pip\">" +
+                    "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + name[index] + "\"/>" +
+                    "<br/><span class=\"remove\">Remove image</span>" +
+                    "</span>").appendTo("#show_image_list");
+                  $(".remove").click(function(){
+                    removeTitle = $(this).parent().find('img').attr('title');
+                    var removeIndex = imageList.indexOf(removeTitle);
+                    if (removeIndex !== -1) {
+                      //remove image on server
+                      $.ajax({
+                        url: "/delete-image/" + imageList[removeIndex],
+                        type: "post",
+                        success: function (data) {
+                          console.log(data);
+                        }
+                      });
+                      imageList.splice(removeIndex, 1);
+                    }
+                    $(this).parent(".pip").remove();
+                    console.log(imageList);
+                  });
                 });
                 fileReader.readAsDataURL(f);
             });
 
-            setTimeout(function() {
-              console.log(imageList);
-            }, 2000);
         });
     } else {
         alert("Your browser doesn't support to File API")
@@ -68,7 +77,7 @@ $(document).ready(function() {
         $.ajax({
             url: '/admin/city/'+ city_id + '/get_all_district',
             type: 'post',
-            data: { city: city_id},
+            data: { city: city_id, test: 'test'},
             success: function (data) {
                 var districts = JSON.parse(data);
                 show_districts = '';

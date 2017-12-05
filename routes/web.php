@@ -21,6 +21,8 @@ Route::get('/index', function() {
 
 Route::get('/add-book', 'BookController@create')->name('add_book');
 Route::post('/add-book', 'BookController@store');
+Route::post('/upload-images', 'BookController@uploadImages');
+Route::post('/delete-image/{image_name}', 'BookController@deleteImage');
 
 Route::get('/book-details', function() {
     return view('book.book_details');
