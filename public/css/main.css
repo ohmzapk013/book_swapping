@@ -1754,9 +1754,9 @@ h2.title {
 }
 
 .user_info input, select, textarea {
-  background: #F0F0E9;
+  /*background: #F0F0E9;*/
   /*border:0;*/
-  color: #696763;
+  /*color: #696763;*/
   padding: 5px;
   width: 100%;
   border-radius: 0;

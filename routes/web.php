@@ -16,7 +16,13 @@ Route::get('/', function () {
 });
 
 Route::get('/index', function() {
-    return view('homepage');
+   // return view('homepage');
+    return 'index';
+});
+
+Route::get('/test', function() {
+   // return view('homepage');
+    return view('profile.test');
 });
 
 Route::get('/add-book', 'BookController@create')->name('add_book');
@@ -28,13 +34,10 @@ Route::get('/book-details', function() {
     return view('book.book_details');
 });
 
-Route::get('/edit-profile', function() {
-    return view('profile.edit_profile');
-});
+Route::get('/edit-profile', 'ProfileController@edit')->name('update_profile');
+Route::post('/edit-profile', 'ProfileController@update');
 
-Route::get('/detail-profile', function() {
-    return view('profile.detail_profile');
-});
+Route::get('/detail-profile/{id}', 'ProfileController@show');
 
 Route::group(['prefix' => 'admin'], function() {
     Route::get('categories', 'CategoryController@index')->name('categories');

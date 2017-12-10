@@ -37,6 +37,7 @@ $(document).ready(function() {
                 fileName = prefixName + file.name;
                 name.push(fileName);
                 imageList.push(fileName);
+                $('input[name="image_list_upload"]').val(imageList.join());
                 var f = file;
                 var fileReader = new FileReader();
                 fileReader.onload = (function(e) {
@@ -61,7 +62,7 @@ $(document).ready(function() {
                       imageList.splice(removeIndex, 1);
                     }
                     $(this).parent(".pip").remove();
-                    console.log(imageList);
+                    $('input[name="image_list_upload"]').val(imageList.join());
                   });
                 });
                 fileReader.readAsDataURL(f);
@@ -82,29 +83,27 @@ $(document).ready(function() {
                 var districts = JSON.parse(data);
                 show_districts = '';
                 for (var i = 0; i < districts.length; i++) {
-                    show_districts += "<option>" + districts[i] + "</option>";
+                    show_districts += "<option value=\""+ i +"\">" + districts[i] + "</option>";
                 }
                 $('select[name="district_id"]').empty();
-                $('select[name="district_id"]').append(show_districts);
+                $('select[name="district_id"]').append('<option class="bs-title-option" value>Choose a district</option>' + show_districts);
             },
             error: function () {
                 $('select[name="district_id"]').empty();
-                $('select[name="district_id"]').append('<option>---</option>');
+                $('select[name="district_id"]').append('<option class="bs-title-option" value>No result</option>');
             }
         });
     });
 
-    var countries = ["Afghanistan", "Albania", "Bahamas", "Bahrain", "Cambodia", "Cameroon", "Denmark", "Djibouti", "East Timor", "Ecuador", "Falkland Islands (Malvinas)", "Faroe Islands", "Gabon", "Gambia", "Haiti", "Heard and Mc Donald Islands", "Iceland", "India", "Jamaica", "Japan", "Kenya", "Kiribati", "Lao People's Democratic Republic", "Latvia", "Macau", "Macedonia", "Namibia", "Nauru", "Oman", "Pakistan", "Palau", "Qatar", "Reunion", "Romania", "Saint Kitts and Nevis", "Saint Lucia", "Taiwan", "Tajikistan", "Uganda", "Ukraine", "Vanuatu", "Vatican City State", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zaire", "Zambia"];
-    
-    var countries_suggestion = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace,
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: countries
+    $('#price').hide();
+    $('select[name="want_to"]').change(function() {
+        $('#price').hide();
+        var val = $('select[name="want_to"] option:selected').val();
+        console.log(val);
+        if (val == 1) {
+            $('#price').show();
+        }
     });
-    
-    $('input[data-role:"tagsinput"]').typeahead(
-        { minLength: 1 },
-        { source: countries_suggestion }
-    );
+
 
 });

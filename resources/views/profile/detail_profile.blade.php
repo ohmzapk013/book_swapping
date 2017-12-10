@@ -17,11 +17,11 @@ Detail Profile
 <div class="container">
     <div class="profile clearfix">                            
         <div class="image">
-            <img src="https://lorempixel.com/700/300/nature/2/" class="img-cover">
+            <img src="{{is_null($user->cover) ? '/images/covers/default_cover.jpeg' : $user->cover}}" class="img-cover">
         </div>                            
         <div class="user clearfix">
             <div class="avatar">
-                <img src="https://bootdey.com/img/Content/user-453533-fdadfd.png" class="img-thumbnail img-profile">
+                <img src="{{is_null($user->avatar) ? '/images/avatars/default_avatar.jpeg' : $user->avatar}}" class="img-thumbnail img-profile">
             </div>
             <div class="actions">
                 <div class="btn-group">
