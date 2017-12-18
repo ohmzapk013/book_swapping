@@ -44,7 +44,7 @@ Detail Profile
                               </strong>
                           </td>
                           <td class="text-primary">
-                              Thang Nguyen     
+                              {{$user->name}}
                           </td>
                       </tr>
                       <tr>        
@@ -55,7 +55,7 @@ Detail Profile
                               </strong>
                           </td>
                           <td class="text-primary">
-                              bootnipets 
+                              {{($user->gender == 0) ? 'Male' : ($user->gender == 1) ? 'Female' : 'Other'}}
                           </td>
                       </tr>
 
@@ -68,7 +68,7 @@ Detail Profile
                               </strong>
                           </td>
                           <td class="text-primary">
-                              29/11/1996
+                              {{date_format(date_create($user->date_of_birth),"d/m/Y")}}
                           </td>
                       </tr>
                       <tr>        
@@ -79,7 +79,7 @@ Detail Profile
                               </strong>
                           </td>
                           <td class="text-primary">
-                              noreply@email.com  
+                              {{$user->email}}
                           </td>
                       </tr>
                       <tr>        
@@ -90,18 +90,7 @@ Detail Profile
                               </strong>
                           </td>
                           <td class="text-primary">
-                              0192929923
-                          </td>
-                      </tr>
-                      <tr>        
-                          <td>
-                              <strong>
-                                  <i class="fa fa-facebook text-primary" aria-hidden="true"></i>
-                                  &nbsp;&nbsp;Facebook                                                
-                              </strong>
-                          </td>
-                          <td class="text-primary">
-                              <a href="https://www.facebook.com/profile.php?id=100004794109260">facebook</a>
+                              {{$user->phone}}
                           </td>
                       </tr>
                       <tr>        
@@ -112,7 +101,7 @@ Detail Profile
                               </strong>
                           </td>
                           <td class="text-primary">
-                               20 jul 20014 20:00:00
+                               {{date_format(date_create($user->created_at),"d/m/Y")}}
                           </td>
                       </tr>                                    
                   </tbody>

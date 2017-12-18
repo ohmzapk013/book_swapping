@@ -15,10 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/index', function() {
-   // return view('homepage');
-    return 'index';
-});
+Route::get('/index', 'BookController@index');
 
 Route::get('/test', function() {
    // return view('homepage');

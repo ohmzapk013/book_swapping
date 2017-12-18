@@ -22,7 +22,16 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        $swapBooks    = Book::where('want_to', 0)->orderBy('created_at', 'desc')->get(); // Want to Swap
+        $sellBooks    = Book::where('want_to', 1)->orderBy('created_at', 'desc')->get(); // Want to Sell
+        $categories  = Category::all();
+        $publishers  = Publisher::all();
+        return view('homepage', ['sellBooks' => $sellBooks,
+                                 'swapBooks' => $swapBooks,
+                                 'categories' => $categories,
+                                 'publishers' => $publishers
+                                ]
+                    );
     }
 
     /**
