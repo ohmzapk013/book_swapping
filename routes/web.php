@@ -27,9 +27,7 @@ Route::post('/add-book', 'BookController@store');
 Route::post('/upload-images', 'BookController@uploadImages');
 Route::post('/delete-image/{image_name}', 'BookController@deleteImage');
 
-Route::get('/book-details', function() {
-    return view('book.book_details');
-});
+Route::get('/book-detail/{id}', 'BookController@show')->name('book_detail');
 
 Route::get('/edit-profile', 'ProfileController@edit')->name('update_profile');
 Route::post('/edit-profile', 'ProfileController@update');

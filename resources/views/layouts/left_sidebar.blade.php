@@ -4,7 +4,7 @@
         @foreach ($categories as $category)
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title"><a href="#">{{$category->name}}</a></h4>
+                    <h4 class="panel-title"><a href="#"><span class="pull-right">({{ $category->total_book }})</span>{{$category->name}}</a></h4>
                 </div>
             </div>
         @endforeach
@@ -15,7 +15,7 @@
         <div class="brands-name">
             <ul class="nav nav-pills nav-stacked">
                 @foreach ($publishers as $publisher)
-                    <li><a href="#"> <span class="pull-right">(50)</span>{{$publisher->name}}</a></li>
+                    <li><a href="#"> <span class="pull-right">({{ $publisher->total_book }})</span>{{$publisher->name}}</a></li>
                 @endforeach
             </ul>
         </div>
@@ -28,8 +28,4 @@
              <b class="pull-left">$ 0</b> <b class="pull-right">$ 600</b>
         </div>
     </div><!--/price-range-->
-    
-    <div class="shipping text-center"><!--shipping-->
-        <img src="images/home/shipping.jpg" alt="" />
-    </div><!--/shipping-->
 </div>

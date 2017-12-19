@@ -15,6 +15,20 @@ use App\Book_Category;
 
 class BookController extends Controller
 {
+    protected $imagePath = "/images/books/";
+    /**
+     * Update Image from JSON to Array
+     *
+     * @return Array
+     */
+    public function updateLinkImages($jsonImages) {
+        $images = [];
+        $imageList = json_decode($jsonImages, true);
+        foreach ($imageList as $image) {
+            $images[] = $this->imagePath . $image;
+        }
+        return $images;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -22,12 +36,20 @@ class BookController extends Controller
      */
     public function index()
     {
-        $swapBooks    = Book::where('want_to', 0)->orderBy('created_at', 'desc')->get(); // Want to Swap
-        $sellBooks    = Book::where('want_to', 1)->orderBy('created_at', 'desc')->get(); // Want to Sell
+        $books       = Book::orderBy('created_at', 'desc')->paginate(30); // Want to Swap
+        foreach ($books as $book) {
+            $book->images = $this->updateLinkImages($book->images);
+        }
         $categories  = Category::all();
+        foreach ($categories as $category) {
+            $category->total_book = Book_Category::where('category_id', $category->id)->count();
+        }
         $publishers  = Publisher::all();
-        return view('homepage', ['sellBooks' => $sellBooks,
-                                 'swapBooks' => $swapBooks,
+        foreach ($publishers as $publisher) {
+            $publisher->total_book = Book::where('publisher_id', $publisher->id)->count();
+        }
+        return view('homepage', [
+                                 'books' => $books,
                                  'categories' => $categories,
                                  'publishers' => $publishers
                                 ]
@@ -43,7 +65,13 @@ class BookController extends Controller
     {
         $cities      = City::all();
         $categories  = Category::all();
+        foreach ($categories as $category) {
+            $category->total_book = Book_Category::where('category_id', $category->id)->count();
+        }
         $publishers  = Publisher::all();
+        foreach ($publishers as $publisher) {
+            $publisher->total_book = Book::where('publisher_id', $publisher->id)->count();
+        }
         return view('book.add_edit_book', ['cities' => $cities, 'categories' => $categories, 'publishers' => $publishers]);
     }
 
@@ -55,14 +83,14 @@ class BookController extends Controller
            $imagesName = explode(',', $request->image_name);
            foreach ($files as $index => $file) {
                //Store the file at our public/images
-               $file->move(public_path() . '/images/products/', $imagesName[$index]);
+               $file->move(public_path() . '/images/books/', $imagesName[$index]);
            }
         }
     }
 
     public function deleteImage($imageName)
     {
-        unlink(public_path() . '/images/products/' . $imageName);
+        unlink(public_path() . '/images/books/' . $imageName);
     }
 
     /**
@@ -141,7 +169,22 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        $book = Book::findOrFail($id);
+        $book->images = $this->updateLinkImages($book->images);
+        $categories  = Category::all();
+        foreach ($categories as $category) {
+            $category->total_book = Book_Category::where('category_id', $category->id)->count();
+        }
+        $publishers  = Publisher::all();
+        foreach ($publishers as $publisher) {
+            $publisher->total_book = Book::where('publisher_id', $publisher->id)->count();
+        }
+        return view('book.book_details', [
+                                 'book'       => $book,
+                                 'categories' => $categories,
+                                 'publishers' => $publishers
+                                ]
+                    );
     }
 
     /**
