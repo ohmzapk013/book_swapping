@@ -12,6 +12,7 @@ use App\Category;
 use App\Publisher;
 use App\Author;
 use App\Book_Category;
+use Auth;
 
 class BookController extends Controller
 {
@@ -73,6 +74,54 @@ class BookController extends Controller
             $publisher->total_book = Book::where('publisher_id', $publisher->id)->count();
         }
         return view('book.add_edit_book', ['cities' => $cities, 'categories' => $categories, 'publishers' => $publishers]);
+    }
+
+    public function filterByCategory($id)
+    {
+        $category       = Category::findOrFail($id);
+        $books = $category->books()->paginate(30);
+        foreach ($books as $book) {
+            $book->images = $this->updateLinkImages($book->images);
+        }
+        $categories  = Category::all();
+        $categories->activeId = $id;
+        foreach ($categories as $cat) {
+            $cat->total_book = Book_Category::where('category_id', $cat->id)->count();
+        }
+        $publishers  = Publisher::all();
+        foreach ($publishers as $publisher) {
+            $publisher->total_book = Book::where('publisher_id', $publisher->id)->count();
+        }
+        return view('homepage', [
+                                 'books' => $books,
+                                 'categories' => $categories,
+                                 'publishers' => $publishers
+                                ]
+                    );
+    }
+
+    public function filterByPublisher($id)
+    {
+        $publisher       = Publisher::findOrFail($id);
+        $books = $publisher->books()->paginate(30);
+        foreach ($books as $book) {
+            $book->images = $this->updateLinkImages($book->images);
+        }
+        $categories  = Category::all();
+        foreach ($categories as $cat) {
+            $cat->total_book = Book_Category::where('category_id', $cat->id)->count();
+        }
+        $publishers  = Publisher::all();
+        $publishers->activeId = $id;
+        foreach ($publishers as $publisher) {
+            $publisher->total_book = Book::where('publisher_id', $publisher->id)->count();
+        }
+        return view('homepage', [
+                                 'books' => $books,
+                                 'categories' => $categories,
+                                 'publishers' => $publishers
+                                ]
+                    );
     }
 
     public function uploadImages(Request $request)
@@ -144,10 +193,12 @@ class BookController extends Controller
             $book->status           = $request->status;
             $book->want_to          = $request->want_to;
             if($request->want_to == 1) {
-                $book->price = $request->price;
+                $book->price        = $request->price;
             }
+            $book->city_id          = $request->city_id;
             $book->publisher_id     = $request->publisher;
-            $book->author           = $author->id;
+            $book->author_id        = $author->id;
+            $book->user_id          = Auth::id();
             $book->save();
 
             //Update Book_Categories

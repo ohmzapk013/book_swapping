@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/index', 'BookController@index');
+Route::get('/index', 'BookController@index')->name('index');
 
 Route::get('/test', function() {
    // return view('homepage');
@@ -26,6 +26,8 @@ Route::get('/add-book', 'BookController@create')->name('add_book');
 Route::post('/add-book', 'BookController@store');
 Route::post('/upload-images', 'BookController@uploadImages');
 Route::post('/delete-image/{image_name}', 'BookController@deleteImage');
+Route::get('/category/{id}', 'BookController@filterByCategory')->name('category');
+Route::get('/publisher/{id}', 'BookController@filterByPublisher')->name('publisher');
 
 Route::get('/book-detail/{id}', 'BookController@show')->name('book_detail');
 

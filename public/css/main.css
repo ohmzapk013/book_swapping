@@ -841,7 +841,6 @@ h2.title {
   font-weight: 700;
   margin: 0 15px;
   text-transform: uppercase;
-  margin-bottom: 30px;
   position: relative;
 }
 
@@ -2392,10 +2391,13 @@ h2.title {
 }
 
 .btn.btn-primary {
-  background:#FE980F;
+/*  background:#5bc0de;
   border: 0 none;
-  border-radius: 0;
+  border-radius: 0;*/
 /*  margin-top: 16px;*/
+    background-color: rgba(52,152,219,0);
+    border-color: #3498db;
+    color: #3498db
 }
 
 .blank-arrow {
