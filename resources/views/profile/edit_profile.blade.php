@@ -5,28 +5,6 @@ Edit Profile
 
 @section('js_extend')
 <script src="{{ asset('/js/profile.js') }}"></script>
-@endsection
-
-@section('css_extend')
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-<meta charset="utf-8">
-<link href="/css/profile.css" rel="stylesheet">
-<style>
-  /* Always set the map height explicitly to define the size of the div
-   * element that contains the map. */
-  #map {
-    height: 100%;
-  }
-  /* Optional: Makes the sample page fill the window. */
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-</style>
-@endsection
-
-@section('home_content')
 <script>
   // Note: This example requires that you consent to location sharing when
   // prompted by your browser. If you see the error "The Geolocation service
@@ -72,12 +50,35 @@ Edit Profile
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCb2XP_B4Dcuzj-KuMh3l8XTQWgdT-AWfk&callback=initMap">
 </script>
+@endsection
+
+@section('css_extend')
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<link href="/css/profile.css" rel="stylesheet">
+<style>
+  /* Always set the map height explicitly to define the size of the div
+   * element that contains the map. */
+  #map {
+    height: 100%;
+  }
+  /* Optional: Makes the sample page fill the window. */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+</style>
+@endsection
+
+@section('home_content')
+
 <section>
 <div class="container">
-    <div class="profile clearfix">                            
+    <div class="profile clearfix">
         <div class="image">
             <img src="{{is_null($user->cover) ? '/images/covers/default_cover.jpeg' : $user->cover}}" class="img-cover">
-        </div>                            
+        </div>
         <div class="user clearfix">
             <div class="avatar" style="max-width: 150px; max-height: 150px;">
                     <img src="{{is_null($user->avatar) ? '/images/avatars/default_avatar.jpeg' : $user->avatar}}" class="img-thumbnail img-profile" id="avatar">

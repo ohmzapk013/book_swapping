@@ -9,20 +9,58 @@ var Shuffle = window.Shuffle;
 var element = $('#my-shuffle-container');
 var shuffle = new Shuffle(element, {
   itemSelector: '.book-item',
+  filterMode: Shuffle.FilterMode.ALL
 });
-
+function removeItem(array, elements) {
+    $.each(elements, function(index, element) {
+        var index = array.indexOf(element);
+        if (index > -1) {
+            array.splice(index, 1);
+        }
+    });
+    return array;
+}
+var filters = [];
 $('.filter_want_to > button').click(function() {
-    $(this).siblings().removeClass('active');
-    $(this).addClass('active');
-    var filter = $(this).data('filter');
-    shuffle.filter(filter);
+    filter = $(this).data('filter');
+    if ($(this).hasClass('active')) {
+        $(this).removeClass('active');
+        index = filters.indexOf(filter);
+        if (index > -1) {
+            filters.splice(index, 1);
+        }
+    } else {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        filters = removeItem(filters, ['swap', 'sell']);
+        filters.push(filter);
+    }
+    if (filters.length > 0) {
+        shuffle.filter(filters);
+    } else {
+        shuffle.filter('all');
+    }
 })
 
 $('.filter_status > button').click(function() {
-    $(this).siblings().removeClass('active');
-    $(this).addClass('active');
-    var filter = $(this).data('filter');
-    shuffle.filter(filter);
+    filter = $(this).data('filter');
+    if ($(this).hasClass('active')) {
+        $(this).removeClass('active');
+        index = filters.indexOf(filter);
+        if (index > -1) {
+            filters.splice(index, 1);
+        }
+    } else {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        filters = removeItem(filters, ['old', 'like_new', 'new']);
+        filters.push(filter);
+    }
+    if (filters.length > 0) {
+        shuffle.filter(filters);
+    } else {
+        shuffle.filter('all');
+    }
 })
 </script>
 @endsection
@@ -51,14 +89,14 @@ $('.filter_status > button').click(function() {
                     @foreach ($books as $book)
                         <?php
                             $wantTo = ($book->want_to == 0) ? 'swap' : 'sell';
-                            $status = ($book->status === 0) ? 'old' : ($book->status === 1) ? 'like_new' : 'new';
+                            $status = ($book->status == 0) ? 'old' : (($book->status == 1) ? 'like_new' : 'new');
                             $data_groups = '["' . $wantTo . '", ' . '"' . $status . '"]';
                         ?>
-                        <div class="col-sm-4 book-item" data-groups='{{ $data_groups }}'>
+                        <div class="col-sm-4 book-item" data-groups='{{ $data_groups }}' data-status='{{ $status }}'>
                             <div class="product-image-wrapper" style="background: #f5f5f0; width: 246px; height: 440px;">
                                 <div class="single-products">
                                         <div class="productinfo text-center">
-                                            <a href="/kdkdk">
+                                            <a href="{{ route('book_detail', $book->id)}}">
                                                 <img width="246" height="300" src="{{ $book->images[0]}}" alt="" />
                                             </a>
                                             <h2>{{ ($book->want_to == 1) ? number_format($book->price) : '' }}</h2>
