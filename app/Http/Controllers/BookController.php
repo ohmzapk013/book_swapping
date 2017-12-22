@@ -249,26 +249,27 @@ class BookController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function showMyBook()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $title = 'My Book';
+        $books = Book::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(30);
+        foreach ($books as $book) {
+            $book->images = $this->updateLinkImages($book->images);
+        }
+        $categories  = Category::all();
+        foreach ($categories as $category) {
+            $category->total_book = Book_Category::where('category_id', $category->id)->count();
+        }
+        $publishers  = Publisher::all();
+        foreach ($publishers as $publisher) {
+            $publisher->total_book = Book::where('publisher_id', $publisher->id)->count();
+        }
+        return view('homepage', [
+                                 'books' => $books,
+                                 'categories' => $categories,
+                                 'publishers' => $publishers,
+                                 'title'   => $title
+                                ]
+                    );
     }
 }

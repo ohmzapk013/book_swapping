@@ -22,6 +22,10 @@ Route::get('/test', function() {
     return view('profile.test');
 });
 
+Route::get('/swap-book', 'SwapController@index')->name('index_swap');
+
+Route::get('/my-book', 'BookController@showMyBook')->name('my_book');
+
 Route::get('/add-book', 'BookController@create')->name('add_book');
 Route::post('/add-book', 'BookController@store');
 Route::post('/upload-images', 'BookController@uploadImages');
