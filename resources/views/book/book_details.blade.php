@@ -29,6 +29,7 @@ img {
 </style>
 @endsection
 @section('js_extend')
+<script type="text/javascript" src="/js/book.js"></script>
 <script type="text/javascript" src="/js/lightslider/lightslider.js"></script>
 <script type="text/javascript">
 $('#slideshow').lightSlider({
@@ -75,6 +76,8 @@ $('#slideshow').lightSlider({
                     <div class="col-sm-7">
                         <div class="product-information"><!--/product-information-->
                             <img src="images/product-details/new.jpg" class="newarrival" alt="" />
+                            <input type="hidden" name="book_id" value="{{ $book->id }}">
+                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                             <h2>{{ $book->title }}</h2>
                             <p>posted by <a href="">{{ $book->user->name }}</a></p>
                             @if (is_null($book->description))
@@ -106,32 +109,75 @@ $('#slideshow').lightSlider({
                 <div style="margin-top: 50px; margin-bottom: 50px;" class="row">
                     <div class="col-sm-1">
                         <div class="thumbnail">
-                        <img class="user-photo img-thumbnail" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                            <img class="user-photo img-thumbnail" src="{{ Auth::user()->avatar }}">
                         </div><!-- /thumbnail -->
-                    </div><!-- /col-sm-1 -->
+                        <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
+                    </div><!-- /col-sm-2 -->
                     <div class="col-sm-11">
-                        <textarea rows="5"></textarea>
-                        <button type="button" class="btn btn-outline-info"><i class="fa fa-comments-o" aria-hidden="true"></i> Add Comment</button>
+                        <textarea rows="5" id="comment_content"></textarea>
+                        <button type="button" class="btn btn-outline-info" name="add_comment"><i class="fa fa-comments-o" aria-hidden="true"></i> Add Comment</button>
                     </div><!-- /col-sm-5 -->
                 </div>
-                <div class="row">
-                    <div class="col-md-1">
-                        <div class="thumbnail">
-                        <img class="img-responsive user-photo img-thumbnail" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-                        </div><!-- /thumbnail -->
-                    </div><!-- /col-sm-1 -->
-                    <div class="col-md-11">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <strong>myusername</strong> <span class="text-muted">commented 5 days ago</span>
+                <div id="all_comment">
+                @foreach ($comments as $comment)
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="thumbnail" style="">
+                            <img class="img-responsive user-photo img-thumbnail" src="{{ $comment->user->avatar }}">
+                            </div><!-- /thumbnail -->
+                        </div><!-- /col-sm-1 -->
+                        <div class="col-md-11">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>{{ $comment->user->name }}</strong>
+                                    <span class="text-muted">commented at {{ date_format($comment->created_at, "d/m/Y") }}</span>
+                                </div>
+                                <div class="panel-body">
+                                    {{ $comment->content }}
+                                </div><!-- /panel-body -->
+                                <button name="reply" type="button" class="btn btn-outline-info"><i class="fa fa-reply" aria-hidden="true"></i> Reply</button>
+                            </div><!-- /panel panel-default -->
+                            <div>
+                                <div class="row reply_comment" style="display: none">
+                                    <div class="col-sm-1">
+                                        <div class="thumbnail">
+                                            <img class="user-photo img-thumbnail" src="{{ Auth::user()->avatar }}">
+                                        </div>
+                                        <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
+                                    </div>
+                                    <div class="col-sm-11">
+                                        <textarea rows="5"></textarea>
+                                        <button type="button" class="btn btn-outline-info" name="add_sub_comment" data-parent="{{ $comment->id }}"><i class="fa fa-comments-o" aria-hidden="true"></i> Add Comment</button>
+                                    </div>
+                                </div>
+                                <div id="all_sub_comment_{{ $comment->id }}">
+                                @foreach ($comment->children as $subComment)
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <div class="thumbnail" style="">
+                                            <img class="img-responsive user-photo img-thumbnail" src="{{ $subComment->user->avatar }}">
+                                            </div><!-- /thumbnail -->
+                                        </div><!-- /col-sm-1 -->
+                                        <div class="col-md-11">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <strong>{{ $subComment->user->name }}</strong>
+                                                    <span class="text-muted">commented at {{ date_format($subComment->created_at, "d/m/Y") }}</span>
+                                                </div>
+                                                <div class="panel-body">
+                                                    {{ $subComment->content }}
+                                                </div><!-- /panel-body -->
+                                                <button name="reply" type="button" class="btn btn-outline-info"><i class="fa fa-reply" aria-hidden="true"></i> Reply</button>
+                                            </div><!-- /panel panel-default -->
+                                        </div>
+                                    </div>
+                                @endforeach
+                                </div>
                             </div>
-                            <div class="panel-body">
-                                Panel content
-                            </div><!-- /panel-body -->
-                            <button type="button" class="btn btn-outline-info"><i class="fa fa-reply" aria-hidden="true"></i> Reply</button>
-                        </div><!-- /panel panel-default -->
-                    </div><!-- /col-sm-5 -->
-                </div><!-- /row -->
+                        </div><!-- /col-sm-5 -->
+                    </div><!-- /row -->
+                @endforeach
+                </div>
             </div>
         </div>
     </div>

@@ -889,6 +889,12 @@ h2.title {
  position:relative;
 }
 
+.product-border{
+  border: #cdcdcd 10px solid;   
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
 /*.product-overlay {
   background:white;
   top: 0;

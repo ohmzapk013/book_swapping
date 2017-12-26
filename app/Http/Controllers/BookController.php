@@ -12,6 +12,7 @@ use App\Category;
 use App\Publisher;
 use App\Author;
 use App\Book_Category;
+use App\Comment;
 use Auth;
 
 class BookController extends Controller
@@ -230,10 +231,12 @@ class BookController extends Controller
         foreach ($publishers as $publisher) {
             $publisher->total_book = Book::where('publisher_id', $publisher->id)->count();
         }
+        $comments = Comment::where('parent_id', NULL)->orderBy('created_at', 'desc')->get();
         return view('book.book_details', [
                                  'book'       => $book,
                                  'categories' => $categories,
-                                 'publishers' => $publishers
+                                 'publishers' => $publishers,
+                                 'comments' => $comments
                                 ]
                     );
     }

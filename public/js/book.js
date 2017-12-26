@@ -1,4 +1,6 @@
 $(document).ready(function() {
+
+/* ADD BOOK */
     $.ajaxSetup({
         headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -105,5 +107,95 @@ $(document).ready(function() {
         }
     });
 
+/* DETAIL BOOK */
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+    if(dd<10) {
+        dd = '0'+dd
+    } 
+    if(mm<10) {
+        mm = '0'+mm
+    } 
+    today = dd + '/' + mm + '/' + yyyy;
+    $('button[name="add_comment"]').click(function() {
+        var bookId  = $('input[name="book_id"]').val();
+        var userId  = $('input[name="user_id"]').val();
+        var content = $('#comment_content').val();
+        data = {
+            book_id: bookId,
+            user_id: userId,
+            content: content
+        }
+        //send Ajax
+        $.ajax({
+            url: "/add-comment/" + bookId,
+            type: "post",
+            data: data,
+            success: function() {
+            }
+        });
+        //add comment DOM
+        var avatar = $('.thumbnail img').attr('src');
+        var name = $('input[name="user_name"]').val();
+        var comment = genarateComment(avatar, name, content, today);
+        $('#all_comment').prepend(comment);
+        //reset content value
+        $('#comment_content').val("");
+    });
 
+    $('button[name="reply"]').click(function() {
+        $(this).parent().next().find('.reply_comment').toggle();
+    });
+
+    $('button[name="add_sub_comment"]').click(function() {
+        var bookId  = $('input[name="book_id"]').val();
+        var userId  = $('input[name="user_id"]').val();
+        var content = $(this).prev().val();
+        console.log(content);
+        var parentId = $(this).data('parent');
+        data = {
+            book_id: bookId,
+            user_id: userId,
+            content: content
+        }
+        //send Ajax
+        $.ajax({
+            url: "/add-sub-comment/" + bookId + "/" + parentId,
+            type: "post",
+            data: data,
+            success: function() {
+            }
+        });
+        //add comment DOM
+        var avatar = $('.thumbnail img').attr('src');
+        var name = $('input[name="user_name"]').val();
+        var comment = genarateComment(avatar, name, content, today);
+        $('#all_sub_comment_' + parentId).prepend(comment);
+        //reset content value
+        $(this).prev().val("");
+    });
 });
+
+function genarateComment(avatar, name, content, date) {
+            return '<div class="row">'+
+'                        <div class="col-md-1">'+
+'                            <div class="thumbnail" style="">'+
+'                            <img class="img-responsive user-photo img-thumbnail" src="'+ avatar +'">'+
+'                            </div>'+
+'                        </div>'+
+'                        <div class="col-md-11">'+
+'                            <div class="panel panel-default">'+
+'                                <div class="panel-heading">'+
+'                                    <strong>' + name + '</strong>'+
+'                                    <span class="text-muted">commented at ' + date + '</span>'+
+'                                </div>'+
+'                                <div class="panel-body">'+
+'                                       '+ content +'   '+
+'                                </div><!-- /panel-body -->'+
+'                                <button type="button" class="btn btn-outline-info"><i class="fa fa-reply" aria-hidden="true"></i> Reply</button>'+
+'                            </div>'+
+'                        </div>'+
+'                    </div>';
+}
