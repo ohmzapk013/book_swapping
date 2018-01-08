@@ -42,11 +42,8 @@ Home | Book Swapping
                                                 <img width="246" height="300" src="{{ $book->images[0]}}" alt="" />
                                             </a>
                                             <h2>{{ ($book->want_to == 1) ? number_format($book->price) : '' }}</h2>
-                                            <p>{{ $book->name }}</p> by <a href="#">{{ $book->author->name}}</a>
+                                            <p>{{ $book->name }}</p> by <a href="{{ route('author', $book->author->id) }}">{{ $book->author->name}}</a>
                                         </div>
-<!--                                         <div text-align="center">
-                                            <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-exchange"></i>Swap Request</a>
-                                        </div> -->
                                 </div>
                                 <div class="choose">
                                     <ul class="nav nav-pills nav-justified">
@@ -63,7 +60,7 @@ Home | Book Swapping
                     {{ $books->links() }}
                 </div>
                 
-                <div class="recommended_items"><!--recommended_items-->
+<!--                 <div class="recommended_items">
                     <h2 class="title text-center">recommended items</h2>
                     
                     <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
@@ -158,7 +155,7 @@ Home | Book Swapping
                             <i class="fa fa-angle-right"></i>
                           </a>          
                     </div>
-                </div><!--/recommended_items-->
+                </div> -->
                 
             </div>
         </div>

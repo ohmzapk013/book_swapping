@@ -139,7 +139,7 @@ $(document).ready(function() {
         //add comment DOM
         var avatar = $('.thumbnail img').attr('src');
         var name = $('input[name="user_name"]').val();
-        var comment = genarateComment(avatar, name, content, today);
+        var comment = generateComment(avatar, name, content, today);
         $('#all_comment').prepend(comment);
         //reset content value
         $('#comment_content').val("");
@@ -171,14 +171,18 @@ $(document).ready(function() {
         //add comment DOM
         var avatar = $('.thumbnail img').attr('src');
         var name = $('input[name="user_name"]').val();
-        var comment = genarateComment(avatar, name, content, today);
+        var comment = generateComment(avatar, name, content, today);
         $('#all_sub_comment_' + parentId).prepend(comment);
         //reset content value
         $(this).prev().val("");
     });
+
+    $('#show_map').click(function() {
+        $('#map').toggle();
+    });
 });
 
-function genarateComment(avatar, name, content, date) {
+function generateComment(avatar, name, content, date) {
             return '<div class="row">'+
 '                        <div class="col-md-1">'+
 '                            <div class="thumbnail" style="">'+

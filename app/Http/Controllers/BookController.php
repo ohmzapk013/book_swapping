@@ -36,9 +36,13 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books       = Book::orderBy('created_at', 'desc')->paginate(30); // Want to Swap
+        if ($request->has('search')) {
+            $books      = Book::where('name', 'like', '%' . $request->input('search') . '%')->orderBy('created_at', 'desc')->paginate(30);
+        } else {
+            $books      = Book::orderBy('created_at', 'desc')->paginate(30); // Want to Swap
+        }
         foreach ($books as $book) {
             $book->images = $this->updateLinkImages($book->images);
         }
@@ -109,11 +113,36 @@ class BookController extends Controller
             $book->images = $this->updateLinkImages($book->images);
         }
         $categories  = Category::all();
+        $categories  = Category::all();
         foreach ($categories as $cat) {
             $cat->total_book = Book_Category::where('category_id', $cat->id)->count();
         }
         $publishers  = Publisher::all();
         $publishers->activeId = $id;
+        foreach ($publishers as $publisher) {
+            $publisher->total_book = Book::where('publisher_id', $publisher->id)->count();
+        }
+        return view('homepage', [
+                                 'books' => $books,
+                                 'categories' => $categories,
+                                 'publishers' => $publishers
+                                ]
+                    );
+    }
+
+    public function filterByAuthor($id)
+    {
+        $author       = Author::findOrFail($id);
+        $books = $author->books()->paginate(30);
+        foreach ($books as $book) {
+            $book->images = $this->updateLinkImages($book->images);
+        }
+        $categories  = Category::all();
+        $categories  = Category::all();
+        foreach ($categories as $cat) {
+            $cat->total_book = Book_Category::where('category_id', $cat->id)->count();
+        }
+        $publishers  = Publisher::all();
         foreach ($publishers as $publisher) {
             $publisher->total_book = Book::where('publisher_id', $publisher->id)->count();
         }
@@ -151,7 +180,6 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $validate = Validator::make($request->all(),
             [
                 'title'   => 'required',

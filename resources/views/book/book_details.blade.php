@@ -40,17 +40,28 @@ $('#slideshow').lightSlider({
     thumbItem: 9
 });
 </script>
-<script>
-    function myMap() {
-    var mapOptions = {
-        center: new google.maps.LatLng(51.5, -0.12),
-        zoom: 14
+<script type="text/javascript">
+function initMap() {
+    var defaultLatLng = {lat: 21, lng: 105};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 6,
+      center: defaultLatLng
+    });
+    var lat = $('#lat').val();
+    var lng = $('#lng').val();
+    var userLatLng = { lat: parseFloat(lat), lng: parseFloat(lng)};
+    if (lat && lng) {
+        var marker = new google.maps.Marker({
+          position: userLatLng,
+          map: map,
+        });
+        map.setCenter(marker.getPosition());
+        map.setZoom(14);
     }
-    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    }
+}
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCb2XP_B4Dcuzj-KuMh3l8XTQWgdT-AWfk&callback=myMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCb2XP_B4Dcuzj-KuMh3l8XTQWgdT-AWfk&callback=initMap"></script>
 @endsection
 @section('home_content')
 <section>
@@ -75,11 +86,10 @@ $('#slideshow').lightSlider({
                     </div>
                     <div class="col-sm-7">
                         <div class="product-information"><!--/product-information-->
-                            <img src="images/product-details/new.jpg" class="newarrival" alt="" />
                             <input type="hidden" name="book_id" value="{{ $book->id }}">
                             <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                             <h2>{{ $book->title }}</h2>
-                            <p>posted by <a href="">{{ $book->user->name }}</a></p>
+                            <p>posted by <a href="{{ route('show_profile', $book->user->id) }}">{{ $book->user->name }}</a></p>
                             @if (is_null($book->description))
                                 <p><b>Description About Book:</b></p>
                                 <p>{{ $book->description }}</p>
@@ -99,17 +109,23 @@ $('#slideshow').lightSlider({
                                 </button>
                             @endif
                             <p><b>Name:</b> {{ $book->name }}</p>
-                            <p><b>Author:</b> {{ $book->author->name }}</p>
+                            <p><b>Author:</b><a href="{{ route('author', $book->author->id) }}">{{ $book->author->name }}</a></p>
                             <p><b>Publisher:</b>{{ $book->publisher->name}}</p>
                             <p><b>Area:</b> {{ isset($book->district_id) ? $book->district->name . ' - ' . $book->city->name : $book->city->name}}</p>
                         </div><!--/product-information-->
                     </div>
                 </div><!--/product-details-->
-                <div id="map" style="height:400px;background:yellow"></div>
+                <button class="btn btn-primary" id="show_map">
+                  Hidden Map
+                </button>
+                <input type="hidden" id="lat" value="{{ $book->user->lat }}">
+                <input type="hidden" id="lng" value="{{ $book->user->lng }}">
+                <div id="map" style="height: 400px;background: yellow;"></div>
+                @auth
                 <div style="margin-top: 50px; margin-bottom: 50px;" class="row">
                     <div class="col-sm-1">
                         <div class="thumbnail">
-                            <img class="user-photo img-thumbnail" src="{{ Auth::user()->avatar }}">
+                            <img class="user-photo img-thumbnail" src="{{ Auth::user()->avatar ? Auth::user()->avatar : '/images/avatars/default_avatar.jpeg' }}">
                         </div><!-- /thumbnail -->
                         <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
                     </div><!-- /col-sm-2 -->
@@ -118,12 +134,18 @@ $('#slideshow').lightSlider({
                         <button type="button" class="btn btn-outline-info" name="add_comment"><i class="fa fa-comments-o" aria-hidden="true"></i> Add Comment</button>
                     </div><!-- /col-sm-5 -->
                 </div>
+                @endauth
+                @guest
+                <div style="margin-top: 20px;">
+                    <a href="{{ route('login') }}"><button class="btn-primary">Login to Comment</button></a>
+                </div>
+                @endguest
                 <div id="all_comment">
-                @foreach ($comments as $comment)
+                @foreach ($book->comments as $comment)
                     <div class="row">
                         <div class="col-md-1">
                             <div class="thumbnail" style="">
-                            <img class="img-responsive user-photo img-thumbnail" src="{{ $comment->user->avatar }}">
+                            <img class="img-responsive user-photo img-thumbnail" src="{{ $comment->user->avatar ? $comment->user->avatar : '/images/avatars/default_avatar.jpeg' }}">
                             </div><!-- /thumbnail -->
                         </div><!-- /col-sm-1 -->
                         <div class="col-md-11">
@@ -138,10 +160,11 @@ $('#slideshow').lightSlider({
                                 <button name="reply" type="button" class="btn btn-outline-info"><i class="fa fa-reply" aria-hidden="true"></i> Reply</button>
                             </div><!-- /panel panel-default -->
                             <div>
+                                @auth
                                 <div class="row reply_comment" style="display: none">
                                     <div class="col-sm-1">
                                         <div class="thumbnail">
-                                            <img class="user-photo img-thumbnail" src="{{ Auth::user()->avatar }}">
+                                            <img class="user-photo img-thumbnail" src="{{ Auth::user()->avatar ? Auth::user()->avatar : '/images/avatars/default_avatar.jpeg'}}">
                                         </div>
                                         <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
                                     </div>
@@ -150,12 +173,13 @@ $('#slideshow').lightSlider({
                                         <button type="button" class="btn btn-outline-info" name="add_sub_comment" data-parent="{{ $comment->id }}"><i class="fa fa-comments-o" aria-hidden="true"></i> Add Comment</button>
                                     </div>
                                 </div>
+                                @endauth
                                 <div id="all_sub_comment_{{ $comment->id }}">
                                 @foreach ($comment->children as $subComment)
                                     <div class="row">
                                         <div class="col-md-1">
                                             <div class="thumbnail" style="">
-                                            <img class="img-responsive user-photo img-thumbnail" src="{{ $subComment->user->avatar }}">
+                                            <img class="img-responsive user-photo img-thumbnail" src="{{ $subComment->user->avatar ? $subComment->user->avatar : '/images/avatars/default_avatar.jpeg' }}">
                                             </div><!-- /thumbnail -->
                                         </div><!-- /col-sm-1 -->
                                         <div class="col-md-11">
@@ -178,6 +202,7 @@ $('#slideshow').lightSlider({
                     </div><!-- /row -->
                 @endforeach
                 </div>
+
             </div>
         </div>
     </div>

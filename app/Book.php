@@ -37,4 +37,9 @@ class Book extends Model
     {
         return $this->belongsTo('App\City');
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
 }

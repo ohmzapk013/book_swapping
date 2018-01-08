@@ -26,7 +26,7 @@
                     </a>
                 </div>
                 <span class="logout-spn" >
-                <a href="#" style="color:#fff;">LOGOUT</a>  
+                <a href="{{ route('index') }}" style="color:#fff;">BACK TO HOME</a>  
                 </span>
             </div>
         </div>
